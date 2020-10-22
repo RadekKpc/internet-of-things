@@ -1,0 +1,14 @@
+*.pdf
+.git
+*.zip
+**/out
+**/.idea
+*.iml
+*.pdf
+*.bat
+**/build
+smart_house_example.py
+LICENSE
+**/VirtualCopernicusNG
+**/venv
+api_key.txt
