@@ -12,3 +12,6 @@ LICENSE
 **/VirtualCopernicusNG
 **/venv
 api_key.txt
+**/__pycache__
+**/udp_controller*
+**/udp_receiver*
