@@ -63,7 +63,7 @@ def main():
         if device == "lamp2":
             led2.off()
 
-    protocol = CustomProtocol("f1", "bathroom", "1", ["lamp1", "lamp2"], on_change, on_off, on_on)
+    protocol = CustomProtocol("f1", "bedroom", "1", ["lamp1", "lamp2"], on_change, on_off, on_on)
 
 
     def switch_2_pressed():
@@ -91,6 +91,4 @@ def main():
         if protocol.match(command):
             print("command match")
             protocol.execute(command)
-        sleep(0.1)
-
         sleep(0.1)

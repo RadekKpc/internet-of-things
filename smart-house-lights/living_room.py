@@ -13,6 +13,7 @@ sock.bind(('', MCAST_PORT))
 mreq = struct.pack("4sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
 
 sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
 
 # initialize the circuit inside the
 configuration = {
@@ -68,6 +69,8 @@ def main():
 
     def send_kitchen_on():
         print("Kitchen lamp toggle!")
+        line = "f1;kitchen;2;lamp1;change"
+        sock.sendto(line.encode('utf-8'), (MCAST_GRP, MCAST_PORT))
 
     led2 = LED(22)
 

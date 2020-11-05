@@ -13,7 +13,7 @@ sock.bind(('', MCAST_PORT))
 mreq = struct.pack("4sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
 
 sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
-
+sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
 
 # initialize the circuit inside the
 
@@ -45,16 +45,33 @@ def main():
     from gpiozero import LED, Button
     from time import sleep
 
+    from CustomProtocol import CustomProtocol
+
+    def on_change(device):
+        if device == "lamp1":
+            led2.toggle()
+
+    def on_on(device):
+        if device == "lamp1":
+            led2.on()
+
+    def on_off(device):
+        if device == "lamp1":
+            led2.off()
+
+    protocol = CustomProtocol("f1", "kitchen", "2", ["lamp1"], on_change, on_off, on_on)
+
     led1 = LED(21)
     led1.off()
 
-
     def switch_2_pressed():
-        print("Living room lamp toggle!")
+        print("Kitchen lamp toggle!")
         led2.toggle()
 
     def send_living_room():
-        print("Kitchen lamp toggle!")
+        print("Living Room lamp toggle!")
+        line = "f1;living_room;1;lamp1;change"
+        sock.sendto(line.encode('utf-8'), (MCAST_GRP, MCAST_PORT))
 
     led2 = LED(22)
 
@@ -68,4 +85,9 @@ def main():
         command = sock.recv(10240)
         command = command.decode("utf-8")
         print(command.split(';'))
+        command = command.split(';')
+        if protocol.match(command):
+            print("command match")
+            protocol.execute(command)
+
         sleep(0.1)
