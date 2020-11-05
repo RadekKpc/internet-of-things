@@ -18,17 +18,17 @@ class CustomProtocol:
         if command[1] != self.room and command[1] != "*":
             return False
 
-        if command[3] != self.id and command[3] != "*":
+        if command[2] != self.id and command[2] != "*":
             return False
 
         return True
 
     def execute(self, command):
-        if command[2] == "*":
+        if command[3] == "*":
             for d in self.devices:
                 self.operation(command, d)
         else:
-            self.operation(command, command[2])
+            self.operation(command, command[3])
 
     def operation(self, command, device):
         if command[4] == "change":
