@@ -43,6 +43,28 @@ def main():
     from gpiozero import LED, Button
     from time import sleep
 
+    from CustomProtocol import CustomProtocol
+
+    def on_change(device):
+        if device == "lamp1":
+            led1.toggle()
+        if device == "lamp2":
+            led2.toggle()
+
+    def on_on(device):
+        if device == "lamp1":
+            led1.on()
+        if device == "lamp2":
+            led2.on()
+
+    def on_off(device):
+        if device == "lamp1":
+            led1.off()
+        if device == "lamp2":
+            led2.off()
+
+    protocol = CustomProtocol("f1", "bathroom", "1", ["lamp1", "lamp2"], on_change, on_off, on_on)
+
 
     def switch_2_pressed():
         print("Lamp 2 toggle!")
@@ -65,4 +87,10 @@ def main():
         command = sock.recv(10240)
         command = command.decode("utf-8")
         print(command.split(';'))
+        command = command.split(';')
+        if protocol.match(command):
+            print("command match")
+            protocol.execute(command)
+        sleep(0.1)
+
         sleep(0.1)

@@ -58,6 +58,7 @@ def main():
             led2.off()
 
     protocol = CustomProtocol("f1", "living_room", "1", ["lamp1"], on_change, on_off, on_on)
+
     led1 = LED(21)
     led1.off()
 
